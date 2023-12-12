@@ -1,18 +1,18 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {Home} from './pages/home'
-import { MainPag } from './pages/main-start';
+import { MainPag } from '../pages/main-start';
 import { Settings, StyleSheet } from 'react-native';
-import Signin from './pages/signin';
-import Welcome from './pages/welcome'
+import Signin from '../pages/signin';
+import Welcome from '../pages/welcome'
+import TabRoutes from './tab.routes';
+import CadastroUser from '../pages/cadastro';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Cadastros } from '../pages/home/cadastros';
 
-import {Ionicons} from '@expo/vector-icons'
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export function Routes(){
+export function StackRoutes(){
     return(
         <Stack.Navigator>
             <Stack.Screen
@@ -31,7 +31,14 @@ export function Routes(){
             />
             <Stack.Screen
             name="home"
-            component={Home}
+            component={TabRoutes}
+            options={{
+                headerShown:false,
+            }}
+            />
+            <Stack.Screen
+            name="cadastroUsuario"
+            component={CadastroUser}
             options={{
                 headerShown:false,
             }}
