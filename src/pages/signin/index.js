@@ -4,10 +4,32 @@ import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal} from 'react-
 import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
 
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import { initializeApp } from "firebase/app";
+import {firebaseConfig} from '../../config/firebaseConfig'
+
 export default function Signin(){
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const handleSignIn = () => {
+        signInWithEmailAndPassword(auth,email,password)
+        .then((userCredential) => {
+            navigation.navigate('home')
+            console.log('logado')
+            const user = userCredential.user;
+            console.log(user)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
+
     return(
         <View style={styles.container}>
             <animatable.View 
@@ -23,7 +45,7 @@ export default function Signin(){
             placeholder="Digite seu E-Mail"
             placeholderTextColor={'#F3F3FF'}
             value={email}
-            onChangeText={value => setEmail(value)}
+            onChangeText={(value) => setEmail(value)}
             style={styles.input}/>
 
         <Text style={styles.title}>Senha</Text>
@@ -31,14 +53,14 @@ export default function Signin(){
             placeholder="Digite sua Senha"
             placeholderTextColor={'#F3F3FF'}
             value={password}
-            onChangeText={value => setPassword(value)}
+            onChangeText={(value) => setPassword(value)}
             style={styles.input}/>
 
         <TouchableOpacity style={styles.buttonForget}>
             <Text style={[styles.forgetText, styles.underline]}>Esqueceu a senha?</Text>
         </TouchableOpacity>    
         
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('home')}>
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
             <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
     

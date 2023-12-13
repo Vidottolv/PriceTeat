@@ -1,30 +1,31 @@
 import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal} from 'react-native';
-
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Alert} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
-import { auth } from "../../config/firebaseConfig";
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
+import { initializeApp } from "firebase/app";
+import {firebaseConfig} from '../../config/firebaseConfig'
 
-import {createUserWithEmailAndPassword} from 'firebase/auth'
-import { Auth } from "firebase/auth";
 
 export default function CadastroUser(){
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function createUser() {
-         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCretendial) => {
-            const user = userCretendial.user;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const handleCreateAccount = () => {
+        createUserWithEmailAndPassword(auth,email,password)
+        .then((userCredential) => {
+            console.log('usuário criado')
+            const user = userCredential.user;
             console.log(user);
         })
-        .catch((error) => {
-            const errorMessage = error.message
-            console.log(errorMessage)
+        .catch(error => {
+            Alert.alert("Erro",error.message)
         })
     }
-
 
     return( 
         <View style={styles.container}>
@@ -41,7 +42,7 @@ export default function CadastroUser(){
             placeholder="Digite seu E-Mail"
             placeholderTextColor={'#F3F3FF'}
             value={email}
-            onChangeText={value => setEmail(value)}
+            onChangeText={(value) => setEmail(value)}
             style={styles.input}/>
 
         <Text style={styles.title}>Senha</Text>
@@ -49,10 +50,10 @@ export default function CadastroUser(){
             placeholder="Digite sua Senha"
             placeholderTextColor={'#F3F3FF'}
             value={password}
-            onChangeText={value => setPassword(value)}
+            onChangeText={(value) => setPassword(value)}
             style={styles.input}/>   
         
-        <TouchableOpacity style={styles.button} onPress={ () => createUser()}>
+        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
             <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
 
