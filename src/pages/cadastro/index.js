@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Alert} from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
 import { initializeApp } from "firebase/app";
 import {firebaseConfig} from '../../config/firebaseConfig'
+
 
 
 export default function CadastroUser(){
@@ -15,17 +16,27 @@ export default function CadastroUser(){
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+
     const handleCreateAccount = () => {
         createUserWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
-            console.log('usuário criado')
             const user = userCredential.user;
             console.log(user);
+            Alert.alert('Sucesso', 'Conta criada com sucesso.\n Você será redirecionado para a página Principal.');
+            setTimeout( () => {
+                navigation.navigate('home')}, 2000)
         })
         .catch(error => {
-            Alert.alert("Erro",error.message)
-        })
-    }
+            if (error.code === 'auth/email-already-in-use') {
+              Alert.alert('Erro', 'E-mail já está em uso! Tente outro.');
+            } else if (error.code === 'auth/invalid-email') {
+              Alert.alert('Erro', 'O e-mail informado é inválido.');
+            } else {
+              console.error(error);
+              Alert.alert('Erro', 'Ocorreu um erro inesperado. Tente novamente mais tarde.');
+            }
+          });
+        }
 
     return( 
         <View style={styles.container}>

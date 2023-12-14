@@ -5,6 +5,7 @@ import Signin from '../pages/signin';
 import Welcome from '../pages/welcome'
 import TabRoutes from './tab.routes';
 import CadastroUser from '../pages/cadastro';
+import ModalAnimado from '../components/modal/modalAnimado';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Cadastros } from '../pages/home/cadastros';
@@ -39,6 +40,13 @@ export function StackRoutes(){
             <Stack.Screen
             name="cadastroUsuario"
             component={CadastroUser}
+            options={{
+                headerShown:false,
+            }}
+            />
+            <Stack.Screen
+            name="modalAnimado"
+            component={ModalAnimado}
             options={{
                 headerShown:false,
             }}

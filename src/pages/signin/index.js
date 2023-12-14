@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
 
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
-import { initializeApp } from "firebase/app";
+import {initializeApp} from "firebase/app";
 import {firebaseConfig} from '../../config/firebaseConfig'
 
 export default function Signin(){
@@ -35,7 +35,7 @@ export default function Signin(){
             <animatable.View 
                 animation={'fadeInLeft'}
                 style={styles.containerHeader}>
-                    <Text style={styles.message}>Bem Vindo(a)</Text>
+                    <Text style={styles.message}>Bem-vindo(a)</Text>
             </animatable.View>
 
     <animatable.View animation={'fadeInUp'} style={styles.containerForm}>
