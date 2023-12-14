@@ -1,40 +1,49 @@
 import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Modal} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
 import { initializeApp } from "firebase/app";
 import {firebaseConfig} from '../../config/firebaseConfig'
-
+import {Snackbar} from 'react-native-paper'
 
 
 export default function CadastroUser(){
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [visibleSnackSuc, setVisibleSnackSuc] = useState(false);
+    const [visibleSnackErr, setVisibleSnackErr] = useState(false);
+
+    function toggleSnackSuc(){
+        setVisibleSnackSuc(true)
+    }
+
+    function dimissSnackSuc(){
+        setVisibleSnackSuc(false)
+    }
+
+    function toggleSnackErr(){
+        setVisibleSnackErr(true)
+    }
+
+    function dimissSnackErr(){
+        setVisibleSnackErr(false)
+    }
+
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
 
     const handleCreateAccount = () => {
         createUserWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(user);
-            Alert.alert('Sucesso', 'Conta criada com sucesso.\n Você será redirecionado para a página Principal.');
-            setTimeout( () => {
-                navigation.navigate('home')}, 2000)
+            toggleSnackSuc();
         })
-        .catch(error => {
-            if (error.code === 'auth/email-already-in-use') {
-              Alert.alert('Erro', 'E-mail já está em uso! Tente outro.');
-            } else if (error.code === 'auth/invalid-email') {
-              Alert.alert('Erro', 'O e-mail informado é inválido.');
-            } else {
-              console.error(error);
-              Alert.alert('Erro', 'Ocorreu um erro inesperado. Tente novamente mais tarde.');
-            }
+        .catch( error => {
+            toggleSnackErr()
           });
         }
 
@@ -67,8 +76,17 @@ export default function CadastroUser(){
         <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
             <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
-
     </animatable.View>
+        <Snackbar
+        visible={visibleSnackSuc}
+        onDismiss={dimissSnackSuc}
+        duration={4000}
+        action={{
+            label:'Ok'
+        }}
+        >
+            Sucesso no cadastro do usuário!
+        </Snackbar>
     </View>
 )}
 

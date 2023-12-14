@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal} from 'react-native';
-
-import { useNavigation } from "@react-navigation/native";
-import * as animatable from 'react-native-animatable'
-
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import {getAuth, signInWithEmailAndPassword,getReactNativePersistence} from 'firebase/auth'
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from '../../config/firebaseConfig'
+import React, { useState } from "react";
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal} from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import * as animatable from 'react-native-animatable'
 
 export default function Signin(){
     const navigation = useNavigation();
@@ -14,7 +13,9 @@ export default function Signin(){
     const [password, setPassword] = useState('');
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const auth = getAuth(app, {
+        persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+      });
 
     const handleSignIn = () => {
         signInWithEmailAndPassword(auth,email,password)

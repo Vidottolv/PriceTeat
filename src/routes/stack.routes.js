@@ -51,6 +51,8 @@ export function StackRoutes(){
                 headerShown:false,
             }}
             />
+
+
         </Stack.Navigator>
     )
 }
