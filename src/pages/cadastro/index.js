@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Modal} from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
@@ -14,24 +14,10 @@ export default function CadastroUser(){
     const [password, setPassword] = useState('');
     const [visibleSnackSuc, setVisibleSnackSuc] = useState(false);
     const [visibleSnackErr, setVisibleSnackErr] = useState(false);
-
-    function toggleSnackSuc(){
-        setVisibleSnackSuc(true)
-    }
-
-    function dimissSnackSuc(){
-        setVisibleSnackSuc(false)
-    }
-
-    function toggleSnackErr(){
-        setVisibleSnackErr(true)
-    }
-
-    function dimissSnackErr(){
-        setVisibleSnackErr(false)
-    }
-
-
+    function toggleSnackSuc(){setVisibleSnackSuc(true)}
+    function dimissSnackSuc(){setVisibleSnackSuc(false)}
+    function toggleSnackErr(){setVisibleSnackErr(true)}
+    function dimissSnackErr(){setVisibleSnackErr(false)}
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
@@ -39,13 +25,11 @@ export default function CadastroUser(){
         createUserWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user);
             toggleSnackSuc();
-        })
-        .catch( error => {
-            toggleSnackErr()
-          });
-        }
+            setTimeout( () => navigation.navigate('home'), duration = 2000)
+        }).catch(error => {
+          toggleSnackErr();
+          });}
 
     return( 
         <View style={styles.container}>
@@ -56,7 +40,6 @@ export default function CadastroUser(){
             </animatable.View>
 
     <animatable.View animation={'fadeInUp'} style={styles.containerForm}>
-        
         <Text style={styles.title}>E-Mail</Text>
         <TextInput
             placeholder="Digite seu E-Mail"
@@ -64,7 +47,6 @@ export default function CadastroUser(){
             value={email}
             onChangeText={(value) => setEmail(value)}
             style={styles.input}/>
-
         <Text style={styles.title}>Senha</Text>
         <TextInput
             placeholder="Digite sua Senha"
@@ -72,20 +54,17 @@ export default function CadastroUser(){
             value={password}
             onChangeText={(value) => setPassword(value)}
             style={styles.input}/>   
-        
         <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
             <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
     </animatable.View>
-        <Snackbar
-        visible={visibleSnackSuc}
-        onDismiss={dimissSnackSuc}
-        duration={4000}
-        action={{
-            label:'Ok'
-        }}
-        >
-            Sucesso no cadastro do usuário!
+        <Snackbar visible={visibleSnackSuc} onDismiss={dimissSnackSuc} duration={2000}
+        style={{height:60, backgroundColor:'#5ea955'}}>
+            Usuário foi cadastrado! Entrando no App.
+        </Snackbar>
+        <Snackbar visible={visibleSnackErr} onDismiss={dimissSnackErr} duration={2000}
+        style={{height:60, backgroundColor:'#e50e0e'}}>
+            Falha ao cadastrar usuário! Tente novamente.
         </Snackbar>
     </View>
 )}
@@ -161,5 +140,5 @@ const styles = StyleSheet.create({
     },
     underline: {
         textDecorationLine: 'underline'
-    }
+    },
 })
