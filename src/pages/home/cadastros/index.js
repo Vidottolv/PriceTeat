@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:"#E7A17A",
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
   },
   containerRecipes:{
     height:'30%',
