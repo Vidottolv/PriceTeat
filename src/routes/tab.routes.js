@@ -14,48 +14,38 @@ export default function TabRoutes(){
             name='Cadastros'
             component={Cadastros}
             options={{
-                headerStyle: {backgroundColor:'#E7A17A'},
-                tabBarStyle:{backgroundColor:'#E06F72'},
+                headerStyle: { backgroundColor:'#E7A17A' },
+                tabBarStyle:{ backgroundColor:'#E06F72' },
                 tabBarShowLabel:false,
-                headerTitleStyle:{
-                    color:'#FFF'
-                },
-                tabBarIcon: ({focused}) => {
-                    if(focused){
+                headerTitleStyle:{ color:'#FFF' },
+                tabBarIcon: ({ focused }) => {
+                    if( focused ){
                         return <Ionicons 
                                 size={25} 
                                 color={'#FFF'} 
                                 name="create-outline"/>
-                    }
-                    return <Ionicons 
+                    }return <Ionicons 
                             size={25} 
                             color={'#DADADA'} 
-                            name="create-outline"/>
-                },
-            }}
-            />
+                            name="create-outline"/>},
+            }}/>
             <Tab.Screen
             name='Consultas'
             component={Consultas}
             options={{
-                headerStyle: {backgroundColor:'#E7A17A'},
-                tabBarStyle: {backgroundColor:'#E06F72'},
+                headerStyle: { backgroundColor:'#E7A17A' },
+                tabBarStyle: { backgroundColor:'#E06F72' },
                 tabBarShowLabel:false,
-                headerTitleStyle:{
-                    color:'#FFF'
-                },
-                tabBarIcon: ({focused}) => {
-                    if(focused){
+                headerTitleStyle:{ color:'#FFF' },
+                tabBarIcon: ({ focused }) => {
+                    if( focused ){
                         return <Ionicons size={25}
                                 color={'#FFF'} 
                                 name="file-tray-full-outline"/>
-                    }
-                    return <Ionicons size={25} 
+                    }return <Ionicons size={25} 
                             color={'#DADADA'} 
-                            name="file-tray-full-outline"/>
-                },
-            }}
-            />
+                            name="file-tray-full-outline"/>},
+                }}/>
         </Tab.Navigator>
     )
 }

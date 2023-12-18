@@ -3,15 +3,17 @@ import {getAuth, signInWithEmailAndPassword,getReactNativePersistence} from 'fir
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from '../../config/firebaseConfig'
 import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal} from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Alert} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import * as animatable from 'react-native-animatable'
+import { ModalTrocaSenha } from '../../components/modal/modalTrocaSenha';
 
 export default function Signin(){
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [SenhaVisible, setSenhaVisible] = useState(false);
+    const handleOpenModalSenha = () => {setSenhaVisible(true);}
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app, {
         persistence: getReactNativePersistence(ReactNativeAsyncStorage)
@@ -24,12 +26,9 @@ export default function Signin(){
             console.log('logado')
             const user = userCredential.user;
             console.log(user)
-        })
-        .catch(error => {
+        }).catch(error => {
             console.log(error)
-        })
-    }
-
+        })}
 
     return(
         <View style={styles.container}>
@@ -38,37 +37,44 @@ export default function Signin(){
                 style={styles.containerHeader}>
                     <Text style={styles.message}>Bem-vindo(a)</Text>
             </animatable.View>
-
-    <animatable.View animation={'fadeInUp'} style={styles.containerForm}>
-        
-        <Text style={styles.title}>E-Mail</Text>
-        <TextInput
-            placeholder="Digite seu E-Mail"
-            placeholderTextColor={'#F3F3FF'}
-            value={email}
-            onChangeText={(value) => setEmail(value)}
-            style={styles.input}/>
-
-        <Text style={styles.title}>Senha</Text>
-        <TextInput
-            placeholder="Digite sua Senha"
-            placeholderTextColor={'#F3F3FF'}
-            value={password}
-            onChangeText={(value) => setPassword(value)}
-            style={styles.input}/>
-
-        <TouchableOpacity style={styles.buttonForget}>
-            <Text style={[styles.forgetText, styles.underline]}>Esqueceu a senha?</Text>
-        </TouchableOpacity>    
-        
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-            <Text style={styles.buttonText}>Acessar</Text>
-        </TouchableOpacity>
-    
-        <TouchableOpacity style={styles.buttonRegister} onPress={() => navigation.navigate('cadastroUsuario')}>
-            <Text style={[styles.registerText, styles.underline]}>Novo por aqui? Cadastre-se</Text>
-        </TouchableOpacity>
-    </animatable.View>
+            <animatable.View animation={'fadeInUp'} style={styles.containerForm}>
+                <Text style={styles.title}>E-Mail</Text>
+                    <TextInput
+                        placeholder="Digite seu E-Mail"
+                        placeholderTextColor={'#F3F3FF'}
+                        value={email}
+                        onChangeText={(value) => setEmail(value)}
+                        style={styles.input}/>
+                <Text style={styles.title}>Senha</Text>
+                    <TextInput
+                        placeholder="Digite sua Senha"
+                        placeholderTextColor={'#F3F3FF'}
+                        value={password}
+                        onChangeText={(value) => setPassword(value)}
+                        style={styles.input}
+                        secureTextEntry={true}/>
+                <TouchableOpacity 
+                    style={styles.buttonForget} 
+                    onPress={handleOpenModalSenha}>
+                        <Text style={[styles.forgetText, styles.underline]}>Esqueceu a senha?</Text>
+                </TouchableOpacity>    
+                <TouchableOpacity 
+                    style={styles.button} 
+                    onPress={handleSignIn}>
+                        <Text style={styles.buttonText}>Acessar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.buttonRegister} 
+                    onPress={() => navigation.navigate('cadastroUsuario')}>
+                        <Text style={[styles.registerText, styles.underline]}>Novo por aqui? Cadastre-se</Text>
+                </TouchableOpacity>
+                <Modal 
+                    visible={SenhaVisible}
+                    animationType='fade' 
+                    transparent={true}>
+                        <ModalTrocaSenha handleClose={() => setSenhaVisible(false)} email={email}/>
+                </Modal>
+            </animatable.View>
     </View>
 )}
 

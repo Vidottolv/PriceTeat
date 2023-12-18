@@ -18,28 +18,40 @@ export function Cadastros(){
     <View style={styles.container}>
       <View style={styles.containerRecipes}>
         <Text style={[styles.title, styles.underline]}>Cadastrar Ingredientes</Text>
-        <Text style={styles.textCompound}>
-          Aqui, você cadastrará os ingredientes a serem usados
-        </Text>
-        <TouchableOpacity style={styles.button} onPress={handleOpenModalIng}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
+          <Text style={styles.textCompound}>
+            Aqui, você cadastrará os ingredientes a serem usados
+          </Text>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleOpenModalIng}>
+              <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
       </View>
       <View style={styles.containerRecipes}>
         <Text style={[styles.title, styles.underline]}>Cadastrar Receitas</Text>
-        <Text style={styles.textCompound}>
-          Aqui, você poderá cadastrar todas as suas receitas para seu restaurante
-        </Text>
-        <TouchableOpacity style={styles.button}onPress={handleOpenModalRec}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
+          <Text style={styles.textCompound}>
+            Aqui, você poderá cadastrar todas as suas receitas para seu restaurante
+          </Text>
+          <TouchableOpacity 
+            style={styles.button}
+            onPress={handleOpenModalRec}>
+              <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
       </View>
-
-    <Modal visible={modalIngVisible} animationType='fade' transparent={true}>
-      <ModalCadastroIngrediente handleClose={() => setModalIngVisible(false)}/>
+    <Modal 
+      visible={modalIngVisible}
+      animationType='fade' 
+      transparent={true}
+      onRequestClose={() => setModalIngVisible(false)}>
+        <ModalCadastroIngrediente 
+          handleClose={() => setModalIngVisible(false)}/>
     </Modal>
-    <Modal visible={modalRecVisible} animationType='fade' transparent={true}>
-      <ModalCadastroReceita handleClose={() => setModalRecVisible(false)}/>
+    <Modal 
+      visible={modalRecVisible} 
+      animationType='fade' 
+      transparent={true}>
+        <ModalCadastroReceita 
+          handleClose={() => setModalRecVisible(false)}/>
     </Modal>
     </View>
   )
