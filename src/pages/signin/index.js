@@ -23,9 +23,7 @@ export default function Signin(){
         signInWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             navigation.navigate('home')
-            console.log('logado')
             const user = userCredential.user;
-            console.log(user)
         }).catch(error => {
             console.log(error)
         })}

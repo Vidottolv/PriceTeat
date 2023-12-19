@@ -14,7 +14,7 @@ const auth = getAuth(app, {
 
 export function ModalTrocaSenha ({handleClose, email}){  
     const recuperaSenha = () => {sendPasswordResetEmail(auth, email)}
-    if (email == ''){msg = 'Digite um email válido.'} 
+    if (email == '' ){msg = 'Digite um email válido.'} 
     if (email != ''){
         recuperaSenha();
         msg = '\tE-mail enviado.\n Verifique sua caixa de E-mail.'

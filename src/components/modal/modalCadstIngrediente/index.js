@@ -3,12 +3,13 @@ import {Ionicons} from '@expo/vector-icons'
 import { useState } from 'react';
 import * as animatable from 'react-native-animatable'
 import RadioButtonGroup, { RadioButtonItem } from "expo-radio-button";
+import NumericInput from 'react-native-numeric-input'
+
 
 export function ModalCadastroIngrediente({ handleClose }){
     const [nomeIng, setNomeIng] = useState('');
-    const [qtdIng, setQtdIng] = useState();
     const [precoIng, setPrecoIng] = useState();
-    const [tamEmbalIng, setTamEmbalIng] = useState();
+    const [tamProdBruto, setTamProdBruto] = useState();
     const [current, setCurrent] = useState(2);
 
     return(
@@ -16,7 +17,7 @@ export function ModalCadastroIngrediente({ handleClose }){
             <TouchableOpacity style={{flex:1, zIndex:9}} onPress={handleClose}></TouchableOpacity>
             <animatable.View animation={'fadeInUpBig'} style={styles.content}>
                     <View style={styles.headerModal}>
-                        <Text style={[styles.title,styles.underline]}>Cadastrar ingrediente</Text>
+                        <Text style={[styles.title,styles.underline]}>Cadastrar produto</Text>
                             <TouchableOpacity style={styles.backButton} onPress={handleClose}>
                                     <Ionicons
                                         size={30} 
@@ -24,7 +25,7 @@ export function ModalCadastroIngrediente({ handleClose }){
                                         name='close-circle-outline'/>
                             </TouchableOpacity>
                     </View>
-                <Text style={styles.subtitle}>Nome do Ingrediente</Text>
+                <Text style={styles.subtitle}>Nome do produto</Text>
                     <TextInput
                         placeholder="Digite o ingrediente"
                         placeholderTextColor={'#F3F3FF'}
@@ -33,7 +34,6 @@ export function ModalCadastroIngrediente({ handleClose }){
                         style={styles.input}/>
                 <Text style={styles.subtitle}>Unidade de Medida</Text>
                 <RadioButtonGroup
-                    containerStyle={styles.radioGroup}
                     selected={current}
                     onSelected={(value) => setCurrent(value)}
                     radioBackground="black">
@@ -43,28 +43,19 @@ export function ModalCadastroIngrediente({ handleClose }){
                         <RadioButtonItem value='4' label={<Text style={styles.textRadio}> Mililitros (Ml)</Text>} style={styles.radio}/>
                         <RadioButtonItem value='5' label={<Text style={styles.textRadio}> Unidade (Un)</Text>} style={styles.radio}/>
                 </RadioButtonGroup>
-                <Text style={styles.subtitle}>Quantidade usada</Text>
-                    <TextInput
-                        placeholder="Digite a quantidade"
-                        placeholderTextColor={'#F3F3FF'}
-                        value={qtdIng}
-                        onChangeText={(value) => setQtdIng(value)}
-                        style={styles.input}/>
-                <Text style={styles.subtitle}>Preço pago</Text>
-                    <TextInput
-                        placeholder="Digite a quantidade"
-                        placeholderTextColor={'#F3F3FF'}
-                        value={precoIng}
-                        onChangeText={(value) => setPrecoIng(value)}
-                        style={styles.input}/>
-                <Text style={styles.subtitle}>Tamanho da embalagem</Text>
-                <Text style={styles.rodape}>** Cadastre qual o tamanho da embalagem do seu ingrediente, usando a mesma unidade de medida que foi selecionada acima.</Text>
-                    <TextInput
-                        placeholder="Digite a quantidade"
-                        placeholderTextColor={'#F3F3FF'}
-                        value={tamEmbalIng}
-                        onChangeText={(value) => setTamEmbalIng(value)}
-                        style={styles.input}/>
+                <Text style={styles.subtitle}>Preço do produto</Text>
+                    <NumericInput 
+                        value={precoIng} onChange={value => setPrecoIng(value)}
+                        rounded valueType='real'
+                        totalWidth={170} totalHeight={50}
+                        textColor={'white'} borderColor={'#F3F3FF'} rightButtonBackgroundColor={'#F3F3FF'} leftButtonBackgroundColor={'#F3F3FF'}/>
+                <Text style={styles.subtitle}>Tamanho do produto</Text>
+                <Text style={styles.rodape}>** Cadastre o peso/litragem/unidade do produto. Ex: Para uma barra de chocolate de 2Kg, cadastre 2 no campo abaixo e selecione Kg em Unidade de Medida.</Text>
+                <NumericInput 
+                        value={tamProdBruto} onChange={value => setTamProdBruto(value)}
+                        rounded 
+                        totalWidth={170} totalHeight={50}
+                        textColor={'white'} borderColor={'#F3F3FF'} rightButtonBackgroundColor={'#F3F3FF'} leftButtonBackgroundColor={'#F3F3FF'}/>
             </animatable.View>
     </SafeAreaView>
     )
@@ -80,7 +71,7 @@ const styles = StyleSheet.create({
     content:{
         backgroundColor:'#E06F72',
         height:'80%',
-        width:'98%',
+        width:'100%',
         borderRadius:24,
         paddingStart:'5%',
         paddingEnd:'5%',
@@ -89,39 +80,39 @@ const styles = StyleSheet.create({
         fontSize:24,
         fontWeight:'bold',
         color:'#FFF',
-        marginLeft:'2%',
+        marginLeft:'1%',
         marginTop:'3%'
     },
     subtitle:{
         fontSize:20,
         fontWeight:'bold',
         color:'#F3F3FF',
-        marginTop:'4%'  
+        marginTop:'5%',
+        marginBottom:'2%'  
     },
     input:{
         color:'#F3F3FF',
         borderBottomWidth:1,
         height:40,
-        fontSize:16,
+        fontSize:14,
         borderBottomColor:'#DADADA'
     },
     backButton:{
         marginTop:'3%',
-        marginRight:'5%',
+        marginRight:'1%',
     },
     headerModal:{
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        marginBottom:10
     },
     underline: {
         textDecorationLine: 'underline'
     },
-    radioGroup:{ 
-        marginTop: 10
-    },
+
     radio:{
         borderColor:'#FFF',
-        marginTop:2,
+        marginTop:1,
     },
     textRadio:{
         color:'#FFF', 
@@ -129,6 +120,8 @@ const styles = StyleSheet.create({
     },
     rodape:{
         fontSize: 10,
-        color:'#FFF'
-    }
+        color:'#FFF',
+        marginBottom:10
+    },
+
 })
